@@ -10,4 +10,9 @@ datagroup: css_20_hackathon_default_datagroup {
 
 persist_with: css_20_hackathon_default_datagroup
 
-explore: exploration {}
+explore: exploration {
+  join: wordcloud {
+    sql_on: ${exploration.timestamp_raw}=${wordcloud.timestamp_raw} ;;
+    relationship: one_to_many
+  }
+}
