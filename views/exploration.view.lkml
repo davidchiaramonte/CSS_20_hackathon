@@ -44,7 +44,10 @@ view: exploration {
 
   dimension: how_many_steps_did_you_take_ {
     type: number
-    sql: ${TABLE}.How_many_steps_did_you_take_ ;;
+    sql: CASE
+    WHEN ${TABLE}.How_many_steps_did_you_take_ <1000000 AND ${TABLE}.How_many_steps_did_you_take_ >0 THEN ${TABLE}.How_many_steps_did_you_take_
+    ELSE NULL
+    END;;
   }
 
   dimension: string_field_26 {
