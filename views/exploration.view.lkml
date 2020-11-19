@@ -81,6 +81,32 @@ view: exploration {
     sql: ${TABLE}.What_are_three_words_to_describe_your_exploration_ ;;
   }
 
+  dimension: three_words_no_commas {
+    type: string
+    sql: REPLACE(${what_are_three_words_to_describe_your_exploration_},",","") ;;
+  }
+
+  dimension: substring_array {
+    type: string
+    hidden: yes
+    sql: SPLIT(${three_words_no_commas}," ") ;;
+  }
+
+  dimension: first_word {
+    type: string
+    sql: ${substring_array}[ORDINAL(1)] ;;
+  }
+
+  dimension: second_word {
+    type: string
+    sql: ${substring_array}[ORDINAL(2)] ;;
+  }
+
+  dimension: third_word {
+    type: string
+    sql: ${substring_array}[ORDINAL(3)] ;;
+  }
+
   dimension: what_city_ {
     type: string
     sql: ${TABLE}.What_city_ ;;
@@ -146,6 +172,11 @@ view: exploration {
     sql: ${TABLE}.When_did_you_walk_ ;;
   }
 
+  dimension: blue_picture_case {
+    type: string
+    sql: CASE WHEN ${what_was_your_blue_picture_of_} LIKE '%sky%' THEN 'Sky' ELSE ${what_was_your_blue_picture_of_} END ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
@@ -154,5 +185,6 @@ view: exploration {
   measure: total_steps_taken {
     type: sum
     sql: ${how_many_steps_did_you_take_} ;;
+    filters: [how_many_steps_did_you_take_: "<1000000"]
   }
 }
