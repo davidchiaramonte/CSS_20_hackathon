@@ -11,3 +11,5 @@ datagroup: css_20_hackathon_default_datagroup {
 persist_with: css_20_hackathon_default_datagroup
 
 explore: exploration {}
+
+explore: word_cloud_dt {}
