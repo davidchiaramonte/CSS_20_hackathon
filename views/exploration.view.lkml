@@ -150,4 +150,9 @@ view: exploration {
     type: count
     drill_fields: []
   }
+
+  measure: total_steps_taken {
+    type: sum
+    sql: ${how_many_steps_did_you_take_} ;;
+  }
 }
