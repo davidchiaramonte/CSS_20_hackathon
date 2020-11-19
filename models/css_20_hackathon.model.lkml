@@ -10,5 +10,6 @@ datagroup: css_20_hackathon_default_datagroup {
 
 persist_with: css_20_hackathon_default_datagroup
 
-explore: exploration {}
-
+explore: exploration {
+  sql_always_where: ${how_many_steps_did_you_take_}<1000000 ;;
+}
