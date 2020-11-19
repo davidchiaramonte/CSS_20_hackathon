@@ -58,12 +58,29 @@ view: exploration {
 
   dimension: how_long_did_you_walk_for_ {
     type: string
-    sql: ${TABLE}.How_long_did_you_walk_for_ ;;
+    case: {
+      when: {
+        sql: ${TABLE}.How_long_did_you_walk_for_ = "30 minutes or less" ;;
+        label: "less than 30min"
+      }
+      when: {
+        sql: ${TABLE}.How_long_did_you_walk_for_ = "Between 30 minutes and an hour" ;;
+        label: "30min to an hour"
+      }
+      when: {
+        sql: ${TABLE}.How_long_did_you_walk_for_ = "Between 1 and 2 hours" ;;
+        label: "1-2 hours"
+      }
+      else: "2+ hours"
+      }
   }
 
   dimension: how_many_steps_did_you_take_ {
     type: number
-    sql: ${TABLE}.How_many_steps_did_you_take_ ;;
+    sql: CASE
+    WHEN ${TABLE}.How_many_steps_did_you_take_ <1000000 AND ${TABLE}.How_many_steps_did_you_take_ >0 THEN ${TABLE}.How_many_steps_did_you_take_
+    ELSE NULL
+    END;;
   }
 
   dimension: string_field_26 {
@@ -107,7 +124,10 @@ view: exploration {
 
   dimension: what_country_did_you_explore_ {
     type: string
-    sql: ${TABLE}.What_country_did_you_explore_ ;;
+    sql: CASE
+    WHEN ${TABLE}.What_country_did_you_explore_ = "Ireland" THEN "Ireland"
+    ELSE "United States"
+    END;;
   }
 
   dimension: what_did_you_have_to_drink_ {
@@ -162,7 +182,19 @@ view: exploration {
 
   dimension: when_did_you_walk_ {
     type: string
-    sql: ${TABLE}.When_did_you_walk_ ;;
+    case: {
+      when: {
+        sql:${TABLE}.When_did_you_walk_ = "Morning" ;;
+        label: "Morning" }
+      when: {
+        sql:${TABLE}.When_did_you_walk_ = "Afternoon" ;;
+        label: "Afternoon"
+      }
+      when: {
+        sql: ${TABLE}.When_did_you_walk_ = "Evening" ;;
+        label: "Evening"
+      }
+    }
   }
 
   measure: count {
@@ -178,5 +210,6 @@ view: exploration {
   measure: average_steps_taken {
     type: average
     sql: ${how_many_steps_did_you_take_} ;;
+    value_format_name: decimal_1
   }
 }
