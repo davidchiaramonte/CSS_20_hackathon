@@ -155,4 +155,9 @@ view: exploration {
     type: sum
     sql: ${how_many_steps_did_you_take_} ;;
   }
+
+  measure: average_steps_taken {
+    type: average
+    sql: ${how_many_steps_did_you_take_} ;;
+  }
 }
