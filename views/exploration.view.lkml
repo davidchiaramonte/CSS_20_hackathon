@@ -22,6 +22,25 @@ view: exploration {
     sql: ${TABLE}.Did_you_buy_or_bring_your_snack_ ;;
   }
 
+  dimension: snack_category {
+    case: {
+      when: {
+        sql: ${did_you_have_a_snack_on_your_exploration_} = false OR ${did_you_have_a_snack_on_your_exploration_} IS NULL;;
+        label: "No snack"
+      }
+      when: {
+        sql: ${did_you_have_a_snack_on_your_exploration_} AND ${did_you_buy_or_bring_your_snack_} = "Brought" ;;
+        label: "Brought"
+      }
+      when: {
+        sql: ${did_you_have_a_snack_on_your_exploration_} AND ${did_you_buy_or_bring_your_snack_} = "Buy" ;;
+        label: "Buy"
+      }
+      else: "Money is a construct"
+    }
+    alpha_sort: yes
+  }
+
   dimension: did_you_have_a_drink_there_ {
     type: yesno
     sql: ${TABLE}.Did_you_have_a_drink_there_ ;;
@@ -148,7 +167,7 @@ view: exploration {
 
   measure: count {
     type: count
-    drill_fields: []
+    drill_fields: [did_you_buy_or_bring_your_snack_, did_you_have_a_snack_on_your_exploration_]
   }
 
   measure: total_steps_taken {
