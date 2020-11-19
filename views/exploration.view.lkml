@@ -91,7 +91,10 @@ view: exploration {
 
   dimension: what_country_did_you_explore_ {
     type: string
-    sql: ${TABLE}.What_country_did_you_explore_ ;;
+    sql: CASE
+    WHEN ${TABLE}.What_country_did_you_explore_ = "Ireland" THEN "Ireland"
+    ELSE "United States"
+    END;;
   }
 
   dimension: what_did_you_have_to_drink_ {
